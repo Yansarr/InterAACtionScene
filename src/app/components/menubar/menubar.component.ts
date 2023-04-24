@@ -5,10 +5,11 @@ import {SceneDisplayService} from "../../services/scene-display.service";
 import {ScenesService} from "../../services/scenes.service";
 import {AudioRecorderService} from "../../services/audio-recorder.service";
 import {LanguageService} from "../../services/language.service";
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {LogoutAppComponent} from '../logoutApp/logout-app.component';
 import {SettingsService} from '../../services/settings.service';
 import {DialogTutorialComponent} from '../dialog-tutorial/dialog-tutorial.component';
+import {DialogResetScenesComponent} from '../dialog-reset-scenes/dialog-reset-scenes.component';
 
 @Component({
   selector: 'app-menubar',
@@ -22,6 +23,7 @@ export class MenubarComponent implements OnInit {
   hideShowButtonChar2 = "◄"
   positionPanelButton = "";
   fullScreenPath = 'images/enterfullscreen.png';
+  resetDialogRef: MatDialogRef<DialogResetScenesComponent>;
 
   COLORS: Color[] = [
     {name: "white", hex: '#FFFFFF'},
@@ -122,6 +124,18 @@ export class MenubarComponent implements OnInit {
     this.dialog.open(DialogTutorialComponent, {
       height: '75%',
       width: '75%'
+    });
+  }
+
+  openDialogReset(): void{
+    this.resetDialogRef = this.dialog.open(DialogResetScenesComponent, {
+      height: '150px',
+      width: '200px'
+    });
+
+    this.resetDialogRef.afterClosed().subscribe(result => {
+      this.sceneDisplayService.selectedScene = 0;
+      this.sceneDisplayService.selectedImage = 0;
     });
   }
 
